@@ -10,7 +10,7 @@ java -jar target\job-matcher-1.0-SNAPSHOT.jar
 
 # API Docs
 ### GET /jobmatcher/{workerId}
-This REST API will return a set of matching jobs for the given worker based on his or her Location preference, Driving Licence Requirement and Skill Set
+This REST API will return a list of matching jobs for the given worker based on his or her Location preference, Driving Licence Requirement and Skill Set
 # Testing
 ```
 mvn test
