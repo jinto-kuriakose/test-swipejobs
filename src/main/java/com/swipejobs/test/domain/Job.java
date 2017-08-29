@@ -9,7 +9,7 @@ import java.util.List;
 public class Job {
 
     private boolean driverLicenseRequired;
-    private List requiredCertificates;
+    private List<String> requiredCertificates;
     private Location location;
 
     private String billRate;

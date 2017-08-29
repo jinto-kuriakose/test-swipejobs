@@ -1,5 +1,6 @@
 package com.swipejobs.test.service;
 
+import com.swipejobs.test.config.Configs;
 import com.swipejobs.test.domain.Job;
 import com.swipejobs.test.domain.Worker;
 import com.swipejobs.test.integration.JobService;
@@ -24,22 +25,37 @@ public class JobMatcherService {
     private JobService jobService;
     @Autowired
     private WorkerService workerService;
+    @Autowired
+    private Configs configs;
 
+    /**
+     * Currently using {@link com.swipejobs.test.jobmatcher.SimpleJobMatcher} to find the best matching jobs.
+     * @param workerId
+     * @return List of matched jobs
+     */
     public List<Job> getMatchedJobs(String workerId) {
 
+        List<Job> matchedJobs = new ArrayList<>();
         Set<Worker> workers = workerService.getWorkers();
         Worker worker = new Worker(workerId);
         if (workers == null || workers.isEmpty() || !workers.contains(worker)) {
             LOGGER.error("Given Worker {} not found in the system", workerId);
-            return new ArrayList<>();
         } else {
             Set<Job> jobs = jobService.getJobs();
             if (jobs == null || jobs.isEmpty()) {
                 LOGGER.error("No Jobs found in the system");
-                return new ArrayList<>();
+                return matchedJobs;
             } else {
-                return jobMatcher.getMatchingJobs(jobs, workers.stream().filter(w -> w.getUserId().equals(workerId)).findFirst().get());
+                matchedJobs = jobMatcher.getMatchingJobs(
+                        jobs,
+                        workers.stream().filter(w -> w.getUserId().equals(workerId)).findFirst().get());
+
+                // Limiting the results based on MaxJobSearchResults criteria
+                if(matchedJobs.size() > configs.getMaxJobSearchResults()){
+                    matchedJobs.subList(configs.getMaxJobSearchResults()-1, matchedJobs.size()).clear();
+                }
             }
         }
+        return matchedJobs;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,11 +22,24 @@ public class JobMatcherController {
     @Autowired
     private JobMatcherService jobMatcherService;
 
+    /**
+     * This api will find out the best matching jobs for a given worker.
+     * @param workerId
+     * @return List of matched jobs
+     */
     @RequestMapping(value = "/jobmatcher/{workerId}", method = RequestMethod.GET)
     List<Job> getMatchingJobs(@PathVariable String workerId) {
 
-        List<Job> jobs = jobMatcherService.getMatchedJobs(workerId);
+        //TODO Accepts a transaction or unique id and attach that with logger so that requests can be tracked easily.
 
-        return jobs;
+        LOGGER.info("New JobMatcher request received for workerId={}", workerId);
+        try {
+            List<Job> jobs = jobMatcherService.getMatchedJobs(workerId);
+            LOGGER.info("Found {} matching jobs for workerId={}",jobs.size(),workerId);
+            return jobs;
+        }catch (Exception ex){
+            LOGGER.error("Error occurred while processing job matcher.",ex);
+            return new ArrayList<>();
+        }
     }
 }

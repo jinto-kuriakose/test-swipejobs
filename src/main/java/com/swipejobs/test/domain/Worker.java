@@ -10,8 +10,8 @@ public class Worker {
 
     private int rating;
 
-    private boolean isActive;
-    private List certificates;
+    private Boolean isActive;
+    private List<String> certificates;
 
     private List skills;
     private JobSearchAddress jobSearchAddress;
@@ -39,16 +39,16 @@ public class Worker {
         return rating;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public boolean isActive() {
+    public Boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public List getCertificates() {
