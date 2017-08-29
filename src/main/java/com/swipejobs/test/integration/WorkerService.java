@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Integration class for Worker service
+ */
 @Component
 public class WorkerService {
 
@@ -26,6 +29,10 @@ public class WorkerService {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    /**
+     *  Returns the list of available workers from Worker Service API.
+     * @return Workers
+     */
     public Set<Worker> getWorkers() {
 
         ResponseEntity<Worker[]> workersResponse = restTemplate.getForEntity(configs.getWorkerResourceUrl(), Worker[].class);

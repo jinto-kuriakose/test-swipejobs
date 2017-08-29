@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Integration class for the Job Service API.
+ */
 @Component
 public class JobService {
 
@@ -27,6 +30,10 @@ public class JobService {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    /**
+     *  Returns the available jobs from Job Service api
+     * @return Jobs from the Job Service
+     */
     public Set<Job> getJobs() {
 
         ResponseEntity<Job[]> jobResponse = restTemplate.getForEntity(configs.getJobResourceUrl(), Job[].class);
