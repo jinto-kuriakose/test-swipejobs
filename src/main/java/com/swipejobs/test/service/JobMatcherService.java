@@ -52,7 +52,7 @@ public class JobMatcherService {
 
                 // Limiting the results based on MaxJobSearchResults criteria
                 if(matchedJobs.size() > configs.getMaxJobSearchResults()){
-                    matchedJobs.subList(configs.getMaxJobSearchResults()-1, matchedJobs.size()).clear();
+                    matchedJobs.subList(configs.getMaxJobSearchResults(), matchedJobs.size()).clear();
                 }
             }
         }
