@@ -35,19 +35,25 @@ public class WorkerService {
      */
     public Set<Worker> getWorkers() {
 
-        ResponseEntity<Worker[]> workersResponse = restTemplate.getForEntity(configs.getWorkerResourceUrl(), Worker[].class);
+        try {
+            ResponseEntity<Worker[]> workersResponse = restTemplate.getForEntity(configs.getWorkerResourceUrl(), Worker[].class);
 
-        //Checking some basic error scenarios
-        if (null == workersResponse) {
-            LOGGER.error("Failed to get Response from Worker service");
-            return null;
-        } else if (HttpStatus.OK != workersResponse.getStatusCode()) {
-            LOGGER.error("Failed to get proper response from Worker Service. StatusCode={}", workersResponse.getStatusCode());
-            return null;
+            //Checking some basic error scenarios
+            if (null == workersResponse) {
+                LOGGER.error("Failed to get Response from Worker service");
+                return null;
+            } else if (HttpStatus.OK != workersResponse.getStatusCode()) {
+                LOGGER.error("Failed to get proper response from Worker Service. StatusCode={}", workersResponse.getStatusCode());
+                return null;
+            }
+            Set<Worker> workers = Arrays.stream(workersResponse.getBody()).collect(Collectors.toSet());
+            //TODO change to debug mode
+            LOGGER.info("Workers={}", workers);
+            return workers;
+        }catch (Exception e){
+            //TODO Define custom exceptions and handle it in the upper layers
+            LOGGER.error("Exception while trying to get Workers list from WorkerService",e);
         }
-        Set<Worker> workers = Arrays.stream(workersResponse.getBody()).collect(Collectors.toSet());
-        //TODO change to debug mode
-        LOGGER.info("Workers={}", workers);
-        return workers;
+        return null;
     }
 }

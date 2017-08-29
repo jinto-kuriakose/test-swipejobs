@@ -31,25 +31,30 @@ public class JobService {
     private RestTemplate restTemplate = new RestTemplate();
 
     /**
-     *  Returns the available jobs from Job Service api
+     * Returns the available jobs from Job Service api
+     *
      * @return Jobs from the Job Service
      */
     public Set<Job> getJobs() {
+        try {
+            ResponseEntity<Job[]> jobResponse = restTemplate.getForEntity(configs.getJobResourceUrl(), Job[].class);
 
-        ResponseEntity<Job[]> jobResponse = restTemplate.getForEntity(configs.getJobResourceUrl(), Job[].class);
-
-        //Checking some basic error scenarios
-        if (null == jobResponse) {
-            LOGGER.error("Failed to get Response from Jobs service");
-            return null;
-        } else if (HttpStatus.OK != jobResponse.getStatusCode()) {
-            LOGGER.error("Failed to get proper response from Jobs Service. StatusCode={}", jobResponse.getStatusCode());
-            return null;
+            //Checking some basic error scenarios
+            if (null == jobResponse) {
+                LOGGER.error("Failed to get Response from Jobs service");
+                return null;
+            } else if (HttpStatus.OK != jobResponse.getStatusCode()) {
+                LOGGER.error("Failed to get proper response from Jobs Service. StatusCode={}", jobResponse.getStatusCode());
+                return null;
+            }
+            Set<Job> jobs = Arrays.stream(jobResponse.getBody()).collect(Collectors.toSet());
+            //TODO change to debug mode
+            LOGGER.info("Jobs={}", jobs);
+            return jobs;
+        } catch (Exception e) {
+            //TODO Define custom exceptions and handle it in the upper layers
+            LOGGER.error("Exception while getting Jobs from JobService",e);
         }
-        Set<Job> jobs = Arrays.stream(jobResponse.getBody()).collect(Collectors.toSet());;
-
-        //TODO change to debug mode
-        LOGGER.info("Jobs={}", jobs);
-        return jobs;
+        return null;
     }
 }
