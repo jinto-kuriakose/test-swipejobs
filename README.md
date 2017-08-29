@@ -7,6 +7,12 @@ run below command from project directory.
 mvn clean install
 java -jar target\job-matcher-1.0-SNAPSHOT.jar
 ```
+# Integrations
+THis service currently depends on below APIs to get the list of Available workers and Jobs
+```
+Workers API : http://test.swipejobs.com/api/workers
+Jobs API    : http://test.swipejobs.com/api/jobs
+```
 
 # API Docs
 ### GET /jobmatcher/{workerId}
