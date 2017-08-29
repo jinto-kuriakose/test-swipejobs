@@ -8,7 +8,7 @@ mvn clean install
 java -jar target\job-matcher-1.0-SNAPSHOT.jar
 ```
 # Integrations
-THis service currently depends on below APIs to get the list of Available workers and Jobs
+This service currently depends on below APIs to get the list of available Workers and Jobs
 ```
 Workers API : http://test.swipejobs.com/api/workers
 Jobs API    : http://test.swipejobs.com/api/jobs
